@@ -11,15 +11,14 @@ using Microsoft.Extensions.Logging;
 
 namespace API.Controllers
 {
-    [Route("[controller]")]
-    public class ActivityController : Controller
+    public class ActivityController : BaseApiController
     {
         private readonly IActivityService _activityService;
         public ActivityController(IActivityService activityService)
         {
             _activityService = activityService;
         }
-        [HttpPost("createActivity")]
+        [HttpPost]
         public async Task<IActionResult> CreateActivity([FromBody] Activities newActivity)
         {
             try
@@ -42,7 +41,7 @@ namespace API.Controllers
 
         }
 
-        [HttpGet("getActivities")]
+        [HttpGet]
         public IActionResult GetActivities()
         {
             try
@@ -56,18 +55,18 @@ namespace API.Controllers
             }
         }
 
-        [HttpGet("getActivityById")]
-        public async Task<IActionResult> GetActivityById(string activityId)
+        [HttpGet("{id}")]
+        public async Task<IActionResult> GetActivityById(string id)
         {
             try
             {
-                if (string.IsNullOrEmpty(activityId))
+                if (string.IsNullOrEmpty(id))
                 {
                     return Json(new { IsSuccess = false, Message = "Activity Id is null or empty." });
                 }
                 else
                 {
-                    var activityDetail = await _activityService.GetActivityById(activityId);
+                    var activityDetail = await _activityService.GetActivityById(id);
 
                     return Json(new { IsSuccess = activityDetail is object, activity = activityDetail });
                 }
@@ -77,18 +76,18 @@ namespace API.Controllers
                 return Json(new { IsSuccess = false, Message = e.Message });
             }
         }
-        [HttpDelete]
-        public async Task<IActionResult> DeleteActivity(string activityId)
+        [HttpDelete("{id}")]
+        public async Task<IActionResult> DeleteActivity(string id)
         {
             try
             {
-                if (string.IsNullOrEmpty(activityId))
+                if (string.IsNullOrEmpty(id))
                 {
                     return Json(new { IsSuccess = false, Message = "Activity Id is empty." });
                 }
                 else
                 {
-                    var activityDeleted = await _activityService.DeleteActivity(activityId);
+                    var activityDeleted = await _activityService.DeleteActivity(id);
                     return Json(new { IsSuccess = activityDeleted });
                 }
             }
