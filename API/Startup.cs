@@ -49,6 +49,7 @@ namespace API
             services.AddScoped(typeof(IRepository<>), typeof(Repository<>));
             services.AddScoped<IActivityService, ActivityService>();
 
+
             services.AddSwaggerGen(c =>
             {
                 c.SwaggerDoc("v1", new OpenApiInfo { Title = "API", Version = "v1" });

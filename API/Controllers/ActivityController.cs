@@ -46,7 +46,7 @@ namespace API.Controllers
         {
             try
             {
-                var activities = _activityService.GetActivities(4, 0);
+                var activities = _activityService.GetActivities(10, 0);
                 return Json(new { IsSuccess = true, Activities = activities });
             }
             catch (Exception e)
