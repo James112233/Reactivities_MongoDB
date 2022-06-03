@@ -1,30 +1,26 @@
 import { Button, Card, Image } from "semantic-ui-react";
-import { Activity } from "../../../app/models/activity";
+import { useAppContext } from "../../../app/context/AppContext";
 
-interface Props {
-  activity: Activity;
-  cancelSelectActivity: () => void;
-  openForm: (id: string) => void;
-}
-
-export default function ActivityDetails({
-  activity,
-  cancelSelectActivity,
-  openForm
-}: Props) {
+export default function ActivityDetails() {
+  const { selectedActivity, cancelSelectActivity, openForm } = useAppContext();
   return (
     <Card fluid>
-      <Image src={`/assets/categoryImages/${activity.category}.jpg`} />
+      <Image src={`/assets/categoryImages/${selectedActivity!.category}.jpg`} />
       <Card.Content>
-        <Card.Header>{activity.title}</Card.Header>
+        <Card.Header>{selectedActivity!.title}</Card.Header>
         <Card.Meta>
-          <span>{activity.date}</span>
+          <span>{selectedActivity!.date}</span>
         </Card.Meta>
-        <Card.Description>{activity.description}</Card.Description>
+        <Card.Description>{selectedActivity!.description}</Card.Description>
       </Card.Content>
       <Card.Content extra>
         <Button.Group widths="2">
-          <Button onClick={() => openForm(activity.id)} basic color="blue" content="Edit" />
+          <Button
+            onClick={() => openForm(selectedActivity!.id)}
+            basic
+            color="blue"
+            content="Edit"
+          />
           <Button
             onClick={cancelSelectActivity}
             basic

@@ -1,64 +1,28 @@
 import { Grid } from "semantic-ui-react";
-import { Activity } from "../../../app/models/activity";
+import { useAppContext } from "../../../app/context/AppContext";
 import ActivityDetails from "../details/ActivityDetails";
 import ActivityForm from "../form/ActivityForm";
 import ActivityList from "./ActivitiyList";
 
-interface Props {
-  activities: Activity[];
-  selectedActivity: Activity | undefined;
-  selectActivity: (id: string) => void;
-  cancelSelectActivity: () => void;
-  editMode: boolean;
-  openForm: (id: string) => void;
-  closeForm: () => void;
-  createOrEditActivity: (activity: Activity) => void;
-  deleteActivity: (id: string) => void;
-  submitting: boolean;
-}
+export default function ActivityDashBoard() {
+  const {
+    activities,
+    selectedActivity,
+    editMode,
+  } = useAppContext();
 
-export default function ActivityDashBoard({
-  activities,
-  selectedActivity,
-  selectActivity,
-  cancelSelectActivity,
-  editMode,
-  openForm,
-  closeForm,
-  createOrEditActivity,
-  deleteActivity,
-  submitting,
-}: Props) {
   return (
     <Grid>
       <Grid.Column width="10">
-        {activities.length !== 0 ? (
-          <ActivityList
-            activities={activities}
-            selectActivity={selectActivity}
-            deleteActivity={deleteActivity}
-            submitting={submitting}
-          />
+        {activities!.length !== 0 ? (
+          <ActivityList />
         ) : (
           <span>No Data Found.</span>
         )}
       </Grid.Column>
       <Grid.Column width="6">
-        {selectedActivity && !editMode && (
-          <ActivityDetails
-            activity={selectedActivity}
-            cancelSelectActivity={cancelSelectActivity}
-            openForm={openForm}
-          />
-        )}
-        {editMode && (
-          <ActivityForm
-            closeForm={closeForm}
-            activity={selectedActivity}
-            createOrEdit={createOrEditActivity}
-            submitting={submitting}
-          />
-        )}
+        {selectedActivity && !editMode && <ActivityDetails />}
+        {editMode && <ActivityForm />}
       </Grid.Column>
     </Grid>
   );
